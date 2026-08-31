@@ -1,108 +1,74 @@
-# Frontend Mentor - Shortly URL shortening API Challenge
+# Frontend Mentor - Shortly URL shortening API Challenge solution
 
-![Design preview for the Shortly URL shortening API coding challenge](preview.jpg)
+This is a solution to the [Shortly URL shortening API Challenge](https://www.frontendmentor.io/challenges/url-shortening-api-landing-page-2ce3ob-G) on Frontend Mentor.
 
-## Welcome! 👋
+## Table of contents
 
-Thanks for checking out this front-end coding challenge.
+- [Overview](#overview)
+  - [The challenge](#the-challenge)
+  - [Screenshot](#screenshot)
+- [My process](#my-process)
+  - [Built with](#built-with)
+  - [What I learned](#what-i-learned)
+  - [Continued development](#continued-development)
+  - [AI Collaboration](#ai-collaboration)
 
-[Frontend Mentor](https://www.frontendmentor.io) challenges help you improve your coding skills by building realistic projects.
+## Overview
 
-**To do this challenge, you need a basic understanding of HTML, CSS and JavaScript.**
+### The challenge
 
-## The challenge
-
-Your challenge is to build out this landing page, integrate with the [Clean URI API](https://cleanuri.com/docs) and get it looking as close to the design as possible.
-
-You can use any tools you like to help you complete the challenge. So if you've got something you'd like to practice, feel free to give it a go.
-
-Your users should be able to:
+Users can:
 
 - View the optimal layout for the site depending on their device's screen size
 - Shorten any valid URL
 - See a list of their shortened links, even after refreshing the browser
 - Copy the shortened link to their clipboard in a single click
-- Receive an error message when the `form` is submitted if:
-  - The `input` field is empty
+- Receive an error message when the form is submitted if the input field is empty
 
-### Want some support on the challenge? 
+### Screenshot
 
-[Join our community](https://www.frontendmentor.io/community) and ask questions in the **#help** channel.
+![](./preview.jpg)
 
-## Where to find everything
+## My process
 
-Your task is to build out the project to the designs inside the `/design` folder. You will find both a mobile and a desktop version of the design.
+### Built with
 
-The designs are in JPG static format. Using JPGs will mean that you'll need to use your best judgment for styles such as `font-size`, `padding` and `margin`.
+- Semantic HTML5 markup
+- [React](https://react.dev/) 19
+- [Vite](https://vite.dev/) as the build tool
+- [Tailwind CSS](https://tailwindcss.com/), themed from the CSS custom properties in `src/index.css`
+- Mobile-first, responsive layout (375px → 1440px+)
+- [Clean URI API](https://cleanuri.com/docs) for the actual link shortening
 
-If you would like the Figma design file to inspect the design in more detail, you can [subscribe as a PRO member](https://www.frontendmentor.io/pro).
+### Project structure
 
-You will find all the required assets in the `/images` folder. The assets are already optimized.
+```
+src/
+  components/   UI components (Header, Hero, ShortenerSection, StatisticsSection, CtaBanner, Footer, ...)
+  hooks/        useLocalStorage — persists shortened links across refreshes
+  services/     urlShortener.js — isolated wrapper around the Clean URI API
+  data/         static content (nav links, feature copy, footer links)
+```
 
-There is also a `style-guide.md` file containing the information you'll need, such as color palette and fonts.
+Keeping the API call in its own `services/` file means the shortening provider can be swapped out later without touching any component.
 
-## Using AI coding assistants
+### What I learned
 
-We've included two files to help you if you're using AI coding assistants (like Claude, GitHub Copilot, Cursor, etc.) while working on this challenge:
+- **Tailwind + CSS custom properties.** Rather than hardcoding hex values, `tailwind.config.js` maps its color palette straight to the `:root` variables in `index.css` (e.g. `bg-blue-400` resolves to `var(--Blue-400)`). One gotcha: Tailwind's color-opacity modifiers (`bg-gray-400/10`) silently produce no CSS when the underlying color is a `var()` reference instead of a raw color value — it needs a real color to apply an alpha channel to. Any shade that needs opacity support has to be defined as a plain HSL/RGB value.
+- **Full-bleed sections vs. centered content.** Every section needs its background to run edge-to-edge while its content stays capped at a max-width and centered. The clean pattern is an outer full-width element for color/background, with an inner `mx-auto max-w-content px-*` wrapper for the content — and that inner padding has to stay applied at *every* breakpoint, not drop to `0` once a `max-width` kicks in, or content touches the viewport edges on any screen narrower than the max-width.
+- **ESM vs. CommonJS config files.** With `"type": "module"` in `package.json`, config files using `module.exports` (like a default `postcss.config.js`) fail at build time. They need `export default` instead.
 
-- `AGENTS.md` - Contains detailed instructions for AI assistants on how to help you with this challenge. It's tailored to this challenge's difficulty level, so the AI will provide guidance appropriate to your learning stage—offering more support for beginner challenges and encouraging more independence on advanced ones.
-- `CLAUDE.md` - A pointer file that directs Claude-based tools to the AGENTS.md instructions.
+### Continued development
 
-**How to use them:** You don't need to do anything! These files are automatically detected by most AI coding tools. The AI will read them and adjust its behavior to be a better learning partner—guiding you toward solutions rather than just giving you the answers.
+- Swap `localStorage` for a small backend so links persist across devices, not just the browser they were created in.
+- Add a CORS proxy (Vercel/Netlify serverless function) ahead of deployment, since the Clean URI API is called directly from the client.
+- Expand keyboard and screen-reader testing on the mobile nav and the shorten-form error state.
 
-**Note:** These files are designed to help you *learn*, not to do the work for you. The AI is instructed to ask questions, give hints, and explain concepts rather than writing complete solutions.
+### AI Collaboration
 
-## Building your project
+This solution was built with Claude (Anthropic) doing the implementation directly, from a starter project that already had Tailwind configured and the design screenshots in `src/design/`.
 
-Feel free to use any workflow that you feel comfortable with. Below is a suggested process, but do not feel like you need to follow these steps:
-
-1. Initialize your project as a public repository on [GitHub](https://github.com/). Creating a repo will make it easier to share your code with the community if you need help. If you're not sure how to do this, [have a read-through of this Try Git resource](https://try.github.io/).
-2. Configure your repository to publish your code to a web address. This will also be useful if you need some help during a challenge as you can share the URL for your project with your repo URL. There are a number of ways to do this, and we provide some recommendations below.
-3. Look through the designs to start planning out how you'll tackle the project. This step is crucial to help you think ahead for CSS classes to create reusable styles.
-4. Before adding any styles, structure your content with HTML. Writing your HTML first can help focus your attention on creating well-structured content.
-5. Write out the base styles for your project, including general content styles, such as `font-family` and `font-size`.
-6. Start adding styles to the top of the page and work down. Only move on to the next section once you're happy you've completed the area you're working on.
-
-## Deploying your project
-
-It's worth noting that you may run into a [Cross-Origin Resource Sharing (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) error once you host your project that prevents the API request from succeeding. To prevent this, you'll need to research proxy servers or how to implement one yourself. As mentioned above, there are many ways to host your project for free. Our recommended hosts for this challenge (because they allow for serverless functions if needed for the proxy) are:
-
-- [Vercel](https://vercel.com/)
-- [Netlify](https://www.netlify.com/)
-
-You can host your site using one of these solutions or any of our other trusted providers. [Read more about our recommended and trusted hosts](https://www.frontendmentor.io/guides/hosting-your-solution).
-
-## Create a custom `README.md`
-
-We strongly recommend overwriting this `README.md` with a custom one. We've provided a template inside the [`README-template.md`](./README-template.md) file in this starter code.
-
-The template provides a guide for what to add. A custom `README` will help you explain your project and reflect on your learnings. Please feel free to edit our template as much as you like.
-
-Once you've added your information to the template, delete this file and rename the `README-template.md` file to `README.md`. That will make it show up as your repository's README file.
-
-## Submitting your solution
-
-Submit your solution on the platform for the rest of the community to see. Follow our ["Complete guide to submitting solutions"](https://www.frontendmentor.io/guides/how-to-submit-solutions) for tips on how to do this.
-
-Remember, if you're looking for feedback on your solution, be sure to ask questions when submitting it. The more specific and detailed you are with your questions, the higher the chance you'll get valuable feedback from the community.
-
-## Sharing your solution
-
-There are multiple places you can share your solution:
-
-1. Share your solution page in the **#finished-projects** channel of the [community](https://www.frontendmentor.io/community).
-2. Share on [X (formerly Twitter)](https://x.com/frontendmentor) and mention **@frontendmentor**, including the repo and live URLs in your post. We'd love to take a look at what you've built and help share it around.
-3. Share your solution on [LinkedIn](https://www.linkedin.com/company/frontend-mentor/).
-4. Blog about your experience building your project. Writing about your workflow, technical choices, and talking through your code is a brilliant way to reinforce what you've learned. Great platforms to write on are [dev.to](https://dev.to/), [Hashnode](https://hashnode.com/), and [CodeNewbie](https://community.codenewbie.org/).
-
-We provide templates to help you share your solution once you've submitted it on the platform. Please do edit them and include specific questions when you're looking for feedback.
-
-The more specific you are with your questions the more likely it is that another member of the community will give you feedback.
-
-## Got feedback for us?
-
-We love receiving feedback! We're always looking to improve our challenges and our platform. So if you have anything you'd like to mention, please email hi[at]frontendmentor[dot]io.
-
-This challenge is completely free. Please share it with anyone who will find it useful for practice.
-
-**Have fun building!** 🚀
+- **Debugging:** the initial `npm run build` failed with `module is not defined in ES module scope`. Claude traced it to `postcss.config.js` using CommonJS syntax in an ESM project (`"type": "module"` in `package.json`) and rewrote it as `export default { ... }`.
+- **Building the UI:** `src/App.jsx` was unused Vite/React boilerplate with no real markup. Claude built out the full component tree (header with a working mobile menu, hero, the shorten form with error and copy states, the staggered "Advanced Statistics" cards, CTA banner, footer) directly from the desktop/mobile design JPGs and the color variables already defined in `index.css`.
+- **Verification:** Claude ran the dev server headlessly (Playwright) to screenshot the build at multiple viewport widths and compare it against the provided designs, and to exercise the empty-submit error state, the mobile nav, and the shorten/copy flow (with the Clean URI API mocked, since it isn't reachable from the sandboxed build environment) before handing the project back.
+- **Follow-up fix:** a reported layout bug — content touching the screen edges at medium viewport widths — turned out to be `md:px-0` overriding the mobile padding once the `md` breakpoint hit, before the `max-w-content` cap had room to center anything. Fixed by keeping non-zero padding at every breakpoint.
