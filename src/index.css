@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root{
+/* Colors */
+
+/*Primary */
+
+--Blue-400:hsl(180, 66%, 49%);
+--Purple-950:hsl(257, 27%, 26%);
+
+/*Secondary */
+
+--Red-400:hsl(0, 87%, 67%);
+
+/*Neutral */
+
+/* Not in the original style guide, but present throughout the designs as
+   the section background behind the shortener results and stats cards. */
+--Gray-100:hsl(230, 25%, 95%);
+--Gray-400:hsl(0, 0%, 75%);
+--Gray-500:hsl(257, 7%, 63%);
+--Gray-900:hsl(255, 11%, 22%);
+--Gray-950:hsl(260, 8%, 14%);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-poppins text-lg font-medium text-gray-500;
+  }
+}
